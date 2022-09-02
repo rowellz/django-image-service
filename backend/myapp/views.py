@@ -4,7 +4,7 @@ from rest_framework import generics
 from .serializers import MyProfileSerializers, MyProfileImageSerializers
 from .models import MyProfileModel
 from rest_framework.parsers import FormParser, MultiPartParser
-from django.http import FileResponse, HttpResponse, response
+from django.http import FileResponse, HttpResponse
 
 class MyProfileListView(generics.ListCreateAPIView):
     '''This class is a view that lists all the MyProfileModel objects
@@ -45,12 +45,12 @@ class MyModelView(generics.CreateAPIView):
                 - code: 201
                   message: Created
         """
-        # name = self.kwargs['name']
-        # name = kwargs.get('name', 'Default Value if not there')
         print("dhjajfkd", request, request.data)
         p1 = MyProfileModel(name=request.data["name"], image=request.data["image"])
         p1.save()
-        return HttpResponse('<h1>Hello HttpResponse</h1>')
+        # return HttpResponse('<h1>Hello HttpResponse</h1>')
+        path = f"./media/{p1.image}"
+        return FileResponse(open(path, 'rb'))
     
     def get(self, *args, **kwargs):
         queryset = self.get_queryset()
