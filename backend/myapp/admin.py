@@ -5,9 +5,9 @@ from .models import MyProfileModel
 
 
 class MyProfileAdmin(admin.ModelAdmin):
-    list_display = ('name', 'image')
-    list_display_links = ('name', 'image',)
-    search_fields = ('name', 'image',)
+    list_display = ('name', 'image', 'gif')
+    list_display_links = ('name', 'image', 'gif')
+    search_fields = ('name', 'image', 'gif')
     list_per_page = 25
     list_filter = ('name',)
 

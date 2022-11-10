@@ -10,10 +10,6 @@ class AugmentImageService:
         image = imageio.imread(img_path)
         image = ia.imresize_single_image(image, 0.5)
 
-        aug = iaa.ElasticTransformation(alpha=20, sigma=10)
-
-        image_aug_unaligned = aug(image=image)
-
         image_list = []
 
         for i in range(10):

@@ -10,4 +10,4 @@ class MyProfileSerializers(serializers.ModelSerializer):
 class MyProfileImageSerializers(serializers.ModelSerializer):
     class Meta:
         model = MyProfileModel
-        fields = ('name', 'image',)
+        fields = ('name', 'image', 'gif')

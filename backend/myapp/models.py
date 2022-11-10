@@ -7,6 +7,8 @@ class MyProfileModel(models.Model):
     name = models.CharField(max_length=50)
     image = models.ImageField(
         upload_to='images/uploads/%Y/%m/%d', default='image.jpg')
+    gif = models.ImageField(
+        upload_to='images/uploads/%Y/%m/%d', default='image.jpg')
 
     def __str__(self):
         return f"{self.name}"

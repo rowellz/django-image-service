@@ -3,7 +3,7 @@ from email.mime import image
 from rest_framework.views import APIView
 from rest_framework import generics
 from myapp.serializers import MyProfileSerializers, MyProfileImageSerializers
-from myapp.services.gif_maker import AugmentImageService
+from myapp.services.gif_maker_service import AugmentImageService
 from myapp.models import MyProfileModel
 from rest_framework.parsers import FormParser, MultiPartParser
 from django.http import FileResponse, HttpResponse
@@ -61,7 +61,8 @@ class GIFAPI(APIView):
         p1.save()
         path = f"./media/{p1.image}"
         service = AugmentImageService()
-        print(path, "Fsdfafasd")
         gif_path = service.aug_image(img_path=path)
+        p1.gif = gif_path.replace("./media/", "")
+        p1.save()
 
         return FileResponse(open(gif_path, 'rb'))
