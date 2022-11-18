@@ -10,6 +10,7 @@ RUN apt update -q \
     libespeak-dev \
     ffmpeg
 RUN apt install -yq gcc
+# RUN apt install -y gcc-multilib libx11-dev
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1

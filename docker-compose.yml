@@ -39,9 +39,17 @@ services:
     networks:
       - main
 
+  gentle:
+    ports:
+      - '8765'
+    image: lowerquality/gentle
+
 networks:
   main:
 
 volumes:
   pgdata:
   static_volume:
+
+# docker run --privileged --rm tonistiigi/binfmt --install amd64
+# docker run -p 8765 --platform=linux/amd64 lowerquality/gentle
