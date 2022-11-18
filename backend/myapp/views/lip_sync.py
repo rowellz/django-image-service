@@ -40,6 +40,6 @@ class LipSyncAPI(APIView):
         align.save()
         
         service = LipSyncService()
-        service.sync_audio_and_text(request.data["audio"], request.data["text"], align)
+        lip_sync = service.sync_audio_and_text(request.data["audio"], request.data["text"], align)
 
-        return HttpResponse({"Yes"}, 200)
+        return HttpResponse(lip_sync, 200)

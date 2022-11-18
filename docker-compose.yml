@@ -1,3 +1,5 @@
+version: "3.3"
+
 services:
   backend:
     restart: always
@@ -23,6 +25,7 @@ services:
       - main
     env_file:
       - ./.env/dev.env
+    # docker exec -it <container_id> python manage.py createsuperuser
 
   db:
     image: postgres
@@ -41,8 +44,11 @@ services:
 
   gentle:
     ports:
-      - '8765'
+      - 8003:8765
     image: lowerquality/gentle
+    volumes:
+      - .:/app
+      - .backend:/test
 
 networks:
   main:

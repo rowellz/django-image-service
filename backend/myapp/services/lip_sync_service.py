@@ -1,20 +1,23 @@
-import numpy as np
-import pyfoal
-import wave
-import scipy.io.wavfile
+import requests
+import json
 
 
 class LipSyncService:
     def sync_audio_and_text(self, audio, text, alignment):
-        rate, data = scipy.io.wavfile.read(f"./media/{alignment.audio_file}")
-        sin_data = np.sin(data)
 
+        params = {
+            'async': 'false',
+        }
 
-        f = open(f"./media/{alignment.text_file}", "r")
-        string = f.read()
+        files = {
+            'audio': open(f"./media/{alignment.audio_file}", 'rb'),
+            'transcript': open(f"./media/{alignment.text_file}", 'rb'),
+        }
+
+        response = requests.post('http://host.docker.internal:8003/transcriptions', params=params, files=files)
+
+        print(response.json())
+
+        return json.dumps(response.json())
+
         
-        with wave.open(alignment.audio_file, "rb") as wave_file:
-            frame_rate = wave_file.getframerate()
-            print("FSAFASF", frame_rate, alignment.text_file, alignment.audio_file)
-        alignment = pyfoal.align(string, data, rate)
-        return alignment

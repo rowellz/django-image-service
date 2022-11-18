@@ -1,5 +1,3 @@
-afaligner
-pyfoal
 Django>=3.2.4,<3.3.0
 django-cors-headers>=3.6.0,<3.7.0
 django-rest-auth>=0.9.5,<1.0.0
