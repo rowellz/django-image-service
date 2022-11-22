@@ -1,4 +1,5 @@
 from ast import arg
+import json
 from io import StringIO
 from email.mime import image
 from rest_framework.views import APIView
@@ -36,10 +37,11 @@ class LipSyncAPI(APIView):
         # contents = output.getvalue()
 
         align = AlignmentModel(audio_file=request.data["audio"], text_file=request.data["text"])
-
         align.save()
         
         service = LipSyncService()
-        lip_sync = service.sync_audio_and_text(request.data["audio"], request.data["text"], align)
+        lip_sync = service.sync_audio_and_text(align)
+        service.create_lazykh_folder(align)
+        # json_object = json.dumps    (lip_sync)
 
         return HttpResponse(lip_sync, 200)
