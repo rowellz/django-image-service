@@ -12,9 +12,9 @@ class MyProfileAdmin(admin.ModelAdmin):
     list_filter = ('name',)
 
 class AlignmentAdmin(admin.ModelAdmin):
-    list_display = ('name', 'text_file', 'audio_file', 'transcription_json')
-    list_display_links = ('name', 'text_file', 'audio_file', 'transcription_json')
-    search_fields = ('name', 'text_file', 'audio_file', 'transcription_json')
+    list_display = ('name', 'text_file', 'audio_file', 'transcription_json', 'video_file')
+    list_display_links = ('name', 'text_file', 'audio_file', 'transcription_json', 'video_file')
+    search_fields = ('name', 'text_file', 'audio_file', 'transcription_json', 'video_file')
     list_per_page = 25
     list_filter = ('name',)
 

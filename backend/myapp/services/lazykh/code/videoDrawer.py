@@ -23,6 +23,8 @@ SCRIBBLE_H = 1000
 MAX_JIGGLE_TIME = 7
 BACKGROUND_COUNT = 5
 
+LAZYKH_DIR = "/app/backend/myapp/services/lazykh/"
+
 def getJiggle(x, fader, multiplier):
     if x >= MAX_JIGGLE_TIME:
         return 1
@@ -36,7 +38,7 @@ def drawFrame(frameNum,paragraph,emotion,imageNum,pose,phoneNum,poseTimeSinceLas
     if paragraph == CACHES[0][0]:
         frame = CACHES[0][1]
     else:
-        frame = Image.open("backgrounds/bga"+str(paragraph%BACKGROUND_COUNT)+".png")
+        frame = Image.open(f"{LAZYKH_DIR}backgrounds/bga"+str(paragraph%BACKGROUND_COUNT)+".png")
         CACHES[0] = [paragraph,frame]
     frame = Image.eval(frame, lambda x: int(256-(256-x)/2)) # Makes the entire background image move 50% closer to white. In other words, it's paler.
 
@@ -85,12 +87,12 @@ def drawFrame(frameNum,paragraph,emotion,imageNum,pose,phoneNum,poseTimeSinceLas
 
     poseIndex = emotion*5+pose
     poseIndexBlinker = poseIndex*3+blinker
-    body = Image.open("poses/pose"+"{:04d}".format(poseIndexBlinker+1)+".png")
+    body = Image.open(f"{LAZYKH_DIR}poses/pose"+"{:04d}".format(poseIndexBlinker+1)+".png")
 
     mouthImageNum = phoneNum+1
     if EMOTION_POSITIVITY[emotion] == 0:
         mouthImageNum += 11
-    mouth = Image.open("mouths/mouth"+"{:04d}".format(mouthImageNum)+".png")
+    mouth = Image.open(f"{LAZYKH_DIR}mouths/mouth"+"{:04d}".format(mouthImageNum)+".png")
 
     if MOUTH_COOR[poseIndex,2] < 0:
         mouth = mouth.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
@@ -257,7 +259,7 @@ f.close()
 #    origStr.remove("")
 
 
-f = open("code/mouthCoordinates.csv","r+")
+f = open(f"{LAZYKH_DIR}code/mouthCoordinates.csv","r+")
 mouthCoordinatesStr = f.read().split("\n")
 f.close()
 MOUTH_COOR = np.zeros((POSE_COUNT,5))

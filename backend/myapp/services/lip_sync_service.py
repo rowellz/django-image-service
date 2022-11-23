@@ -49,5 +49,13 @@ class LipSyncService:
             json_object = json.dumps(alignment.transcription_json, indent=4)
             outfile.write(json_object)
 
-        # text_file = open(f"./media/{alignment.audio_file}", "r")
-        
+        print("HELLO", new_dir)
+
+        os.system(f"python /app/backend/myapp/services/lazykh/code/scheduler.py --input_file {new_dir}t")
+        os.system(f"python /app/backend/myapp/services/lazykh/code/videoDrawer.py --input_file {new_dir}t --use_billboards F --jiggly_transitions F")
+        os.system(f"python /app/backend/myapp/services/lazykh/code/videoFinisher.py --input_file {new_dir}t --keep_frames F")
+
+        alignment.video_file = f"transcriptions/transcription_{alignment.id}/t_final.mp4"
+        alignment.save()
+
+        print("BYE")
