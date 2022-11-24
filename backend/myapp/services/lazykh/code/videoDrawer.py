@@ -7,6 +7,9 @@ from PIL import Image, ImageDraw
 import math
 from utils import getFilenameOfLine
 import shutil
+import imageio
+import imgaug.augmenters as iaa
+
 
 FRAME_START_RENDER_AT  = 0
 PRINT_EVERY = 10
@@ -136,6 +139,9 @@ def drawFrame(frameNum,paragraph,emotion,imageNum,pose,phoneNum,poseTimeSinceLas
     frame.putdata(newData)
     print(frame.mode)
     frame.save(INPUT_FILE+"_frames/f"+"{:06d}".format(frameNum)+".png")
+    image = imageio.imread(INPUT_FILE+"_frames/f"+"{:06d}".format(frameNum)+".png")
+    distorted_image = distort_image(image, 25, 40)
+    imageio.imwrite(INPUT_FILE+"_frames/f"+"{:06d}".format(frameNum)+".png", distorted_image)
 
 def duplicateFrame(prevFrame, thisFrame):
     prevFrameFile = INPUT_FILE+"_frames/f"+"{:06d}".format(prevFrame)+".png"
@@ -207,6 +213,12 @@ def setPhoneme(i):
 
 def timestepToFrames(timestep):
     return max(0,int(timestep*FRAME_RATE-2))
+
+def distort_image(image, min: int, max: int):
+        rand_alpha = random.randint(min, max)
+        aug = iaa.ElasticTransformation(alpha=rand_alpha, sigma=10)
+        aug_image = aug(image=image)
+        return aug_image
 
 def stateOf(p):
     global indicesOn

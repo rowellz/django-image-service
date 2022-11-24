@@ -23,25 +23,11 @@ class LipSyncAPI(APIView):
         ]
     )
     def post(self, request):
-        print("fsdaffdsfdas", request.data, request.query_params)
-        # p1 = MyProfileModel(name=request.data["name"], image=request.data["image"])
-        # p1.save()
-        # path = f"./media/{p1.image}"
-
-        
-        # output = StringIO()
-        # output.write(request.data["text"])
-    
-        # # Retrieve file contents -- this will be
-        # # 'First line.\nSecond line.\n'
-        # contents = output.getvalue()
 
         align = AlignmentModel(audio_file=request.data["audio"], text_file=request.data["text"])
         align.save()
-        
         service = LipSyncService()
         lip_sync = service.sync_audio_and_text(align)
         service.create_lazykh_folder(align)
-        # json_object = json.dumps    (lip_sync)
 
         return HttpResponse(lip_sync, 200)

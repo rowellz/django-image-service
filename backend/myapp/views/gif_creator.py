@@ -56,12 +56,13 @@ class GIFAPI(APIView):
         ]
     )
     def post(self, request):
-        print("fsdaffdsfdas", request.data, request.query_params)
         p1 = MyProfileModel(name=request.data["name"], image=request.data["image"])
         p1.save()
         path = f"./media/{p1.image}"
         service = AugmentImageService()
-        gif_path = service.aug_image(img_path=path)
+        min = request.data.get("min", 10)
+        max = request.data.get("min", 100)
+        gif_path = service.create_gif(img_path=path, min=min, max=max)
         p1.gif = gif_path.replace("./media/", "")
         p1.save()
 
