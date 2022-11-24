@@ -40,7 +40,8 @@ def drawFrame(frameNum,paragraph,emotion,imageNum,pose,phoneNum,poseTimeSinceLas
     else:
         frame = Image.open(f"{LAZYKH_DIR}backgrounds/bga"+str(paragraph%BACKGROUND_COUNT)+".png")
         CACHES[0] = [paragraph,frame]
-    frame = Image.eval(frame, lambda x: int(256-(256-x)/2)) # Makes the entire background image move 50% closer to white. In other words, it's paler.
+    # frame = Image.eval(frame, lambda x: int(256-(256-x)/2)) # Makes the entire background image move 50% closer to white. In other words, it's paler.
+    frame = Image.new(mode="RGBA", size=(1920, 1080), color=(100, 100, 100, 0))
 
     scribble = None
     if USE_BILLBOARDS:
@@ -87,12 +88,13 @@ def drawFrame(frameNum,paragraph,emotion,imageNum,pose,phoneNum,poseTimeSinceLas
 
     poseIndex = emotion*5+pose
     poseIndexBlinker = poseIndex*3+blinker
-    body = Image.open(f"{LAZYKH_DIR}poses/pose"+"{:04d}".format(poseIndexBlinker+1)+".png")
+    # body = Image.open(f"{LAZYKH_DIR}poses/pose"+"{:04d}".format(poseIndexBlinker+1)+".png")
+    body = Image.new("RGBA", (1920, 1080), (100, 100, 100))
 
     mouthImageNum = phoneNum+1
     if EMOTION_POSITIVITY[emotion] == 0:
         mouthImageNum += 11
-    mouth = Image.open(f"{LAZYKH_DIR}mouths/mouth"+"{:04d}".format(mouthImageNum)+".png")
+    mouth = Image.open(f"{LAZYKH_DIR}mouths/mouth"+"{:04d}".format(mouthImageNum)+".png").convert("RGBA")
 
     if MOUTH_COOR[poseIndex,2] < 0:
         mouth = mouth.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
@@ -123,6 +125,16 @@ def drawFrame(frameNum,paragraph,emotion,imageNum,pose,phoneNum,poseTimeSinceLas
     frame.paste(body,(inx-s_X,iny),body)
     if not os.path.isdir(INPUT_FILE+"_frames"):
         os.makedirs(INPUT_FILE+"_frames")
+    datas = frame.getdata()
+    newData = []
+    for item in datas:
+        if item[0] == 100 and item[1] == 100 and item[2] == 100:
+            newData.append((255, 255, 255, 0))
+        else:
+            newData.append(item)  # other colours remain unchanged
+
+    frame.putdata(newData)
+    print(frame.mode)
     frame.save(INPUT_FILE+"_frames/f"+"{:06d}".format(frameNum)+".png")
 
 def duplicateFrame(prevFrame, thisFrame):

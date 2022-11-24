@@ -132,4 +132,4 @@ dmypy.json
 .pyre/
 
 #custom ignore
-backend/media/images/uploads/
+backend/media/
