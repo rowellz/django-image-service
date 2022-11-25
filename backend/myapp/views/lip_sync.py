@@ -1,7 +1,3 @@
-from ast import arg
-import json
-from io import StringIO
-from email.mime import image
 from rest_framework.views import APIView
 from rest_framework import generics
 from myapp.serializers import MyProfileSerializers, MyProfileImageSerializers
