@@ -102,12 +102,12 @@ def drawFrame(frameNum,paragraph,emotion,imageNum,pose,phoneNum,poseTimeSinceLas
         mouth = mouth.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
     if MOUTH_COOR[poseIndex,3] != 1:
         m_W, m_H = mouth.size
-        mouth = mouth.resize((int(abs(m_W*MOUTH_COOR[poseIndex,2])), int(m_H*MOUTH_COOR[poseIndex,3])), Image.Resampling.LANCZOS)
+        # mouth = mouth.resize((int(abs(m_W*MOUTH_COOR[poseIndex,2])), int(m_H*MOUTH_COOR[poseIndex,3])), Image.Resampling.LANCZOS)
     if MOUTH_COOR[poseIndex,4] != 0:
         mouth = mouth.rotate(-MOUTH_COOR[poseIndex,4],resample=Image.Resampling.BICUBIC)
 
     m_W, m_H = mouth.size
-    body.paste(mouth,(int(MOUTH_COOR[poseIndex,0]-m_W/2),int(MOUTH_COOR[poseIndex,1]-m_H/2)),mouth)
+    # body.paste(mouth,(int(MOUTH_COOR[poseIndex,0]-m_W/2),int(MOUTH_COOR[poseIndex,1]-m_H/2)),mouth)
 
     ow, oh = body.size
     nh = oh*jiggleFactor
@@ -120,7 +120,7 @@ def drawFrame(frameNum,paragraph,emotion,imageNum,pose,phoneNum,poseTimeSinceLas
     else:
         inx += 50
     iny = int(round(W_H-nh))
-    body = body.resize((inw,inh), Image.Resampling.LANCZOS)
+    # body = body.resize((inw,inh), Image.Resampling.LANCZOS)
 
     if FLIPPED:
         body = body.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
@@ -137,7 +137,7 @@ def drawFrame(frameNum,paragraph,emotion,imageNum,pose,phoneNum,poseTimeSinceLas
 
     frame.putdata(newData)
     print(frame.mode)
-    frame.save(INPUT_FILE+"_frames/f"+"{:06d}".format(frameNum)+".png")
+    mouth.save(INPUT_FILE+"_frames/f"+"{:06d}".format(frameNum)+".png")
     image = imageio.imread(INPUT_FILE+"_frames/f"+"{:06d}".format(frameNum)+".png")
     distorted_image = distort_image(image, 25, 40)
     imageio.imwrite(INPUT_FILE+"_frames/f"+"{:06d}".format(frameNum)+".png", distorted_image)
@@ -213,10 +213,10 @@ def setPhoneme(i):
 def timestepToFrames(timestep):
     return max(0,int(timestep*FRAME_RATE-2))
 
-def distort_image(image, min: int, max: int):
+def distort_image(image_, min: int, max: int):
         rand_alpha = random.randint(min, max)
         aug = iaa.ElasticTransformation(alpha=rand_alpha, sigma=10)
-        aug_image = aug(image=image)
+        aug_image = aug(image=image_)
         return aug_image
 
 def stateOf(p):
@@ -323,3 +323,19 @@ for frame in range(0,FRAME_COUNT):
             drawFrame(frame,paragraph,emotion,imageNum,pose,phonemesPerFrame[frame],timeSincePrevPoseChange,timeUntilNextPoseChange)
         if frame%PRINT_EVERY == 0 or frame == FRAME_COUNT-1:
             print(f"Just drew frame {frame+1} / {FRAME_COUNT}")
+
+count = FRAME_COUNT
+mouth = imageio.imread(f"{LAZYKH_DIR}mouths/mouth0007.png")
+distorted_image = distort_image(mouth, 25, 40)
+imageio.imwrite(INPUT_FILE+"_frames/f"+"{:06d}".format(count)+".png", distorted_image)
+count = count+1
+imageio.imwrite(INPUT_FILE+"_frames/f"+"{:06d}".format(count)+".png", distorted_image)
+count = count+1
+
+mouth = imageio.imread(f"{LAZYKH_DIR}mouths/mouth0009.png")
+
+for i in range(10):
+    print(f"num {count}")
+    distorted_image = distort_image(mouth, 25, 40)
+    imageio.imwrite(INPUT_FILE+"_frames/f"+"{:06d}".format(count)+".png", distorted_image)
+    count = count+1

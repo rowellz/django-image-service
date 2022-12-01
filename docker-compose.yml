@@ -43,6 +43,7 @@ services:
       - main
 
   gentle:
+    container_name: gentle
     ports:
       - 8003:8765
     image: lowerquality/gentle
