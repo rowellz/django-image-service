@@ -1,5 +1,6 @@
 import requests
 import json
+import speech_recognition as sr
 from django.core.files.base import ContentFile, File
 import os
 from scipy.io import wavfile
@@ -8,7 +9,13 @@ import shutil
 
 
 class LipSyncService:
-    def sync_audio_and_text(self, alignment):
+    def sync_audio_and_text(self, alignment, automate_text=False):
+
+        if automate_text:
+            text = self.speach_to_text(alignment)
+            alignment.text_file = ContentFile(text.encode('utf8'), name='temp.txt')
+            alignment.save()
+            print("Fsffsdasda")
 
         params = {
             'async': 'false',
@@ -25,6 +32,18 @@ class LipSyncService:
         alignment.save()
 
         return json.dumps(response.json())
+
+    def speach_to_text(self, alignment):
+        # initialize the recognizer
+        r = sr.Recognizer()
+
+        # open the file
+        with sr.AudioFile(alignment.audio_file) as source:
+            # listen for the data (load audio to memory)
+            audio_data = r.record(source)
+            # recognize (convert from speech to text)
+            text = r.recognize_google(audio_data)
+            return text
         
     def create_lazykh_folder(self, alignment):
 
