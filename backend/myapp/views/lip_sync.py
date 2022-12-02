@@ -27,7 +27,7 @@ class LipSyncAPI(APIView):
         
         text = request.data.get("text", False)
         text_file = request.data.get("text_file", False)
-        auto_text = True if request.data.get("text_file", "false").lower() == "true" else False
+        auto_text = True if request.data.get("auto_text", "false").lower() == "true" else False
 
         if not text_file and not text and not auto_text:
             return HttpResponse({"bad request!"}, 400)
