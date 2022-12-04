@@ -26,7 +26,7 @@ class LipSyncService:
             'transcript': open(f"./media/{alignment.text_file}", 'rb'),
         }
 
-        response = requests.post('http://host.docker.internal:8003/transcriptions', params=params, files=files)
+        response = requests.post('http://gentle:8765/transcriptions', params=params, files=files)
         
         alignment.transcription_json = response.json()
         alignment.save()

@@ -42,5 +42,5 @@ class LipSyncAPI(APIView):
         print("fsafsda", auto_text)
         lip_sync = service.sync_audio_and_text(align, auto_text)
         service.create_lazykh_folder(align)
-
-        return HttpResponse(lip_sync, 200)
+        return FileResponse(open(f"./media/{align.video_file}", 'rb'))
+        # return HttpResponse(lip_sync, 200)
