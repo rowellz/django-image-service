@@ -1,5 +1,6 @@
 import base64
 import tempfile
+import json
 from rest_framework.views import APIView
 from rest_framework import generics
 from django.core.files.base import ContentFile
@@ -42,5 +43,7 @@ class LipSyncAPI(APIView):
         print("fsafsda", auto_text)
         lip_sync = service.sync_audio_and_text(align, auto_text)
         service.create_lazykh_folder(align)
-        return FileResponse(open(f"./media/{align.video_file}", 'rb'))
-        # return HttpResponse(lip_sync, 200)
+        # return FileResponse(open(f"./media/{align.video_file}", 'rb'))
+        str = f"192.168.1.248:8000/media/{align.video_file}"
+        payload = dict({"link": str, "align": lip_sync})
+        return HttpResponse(str, 200)
