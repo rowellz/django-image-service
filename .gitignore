@@ -3,6 +3,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+/backend/media/*
 # C extensions
 *.so
 

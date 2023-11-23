@@ -10,7 +10,8 @@ djangorestframework-simplejwt
 imgaug==0.4.0
 SpeechRecognition
 pydub
-
+torch
+torchaudio
 #For testing
 Faker
 flake8

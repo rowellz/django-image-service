@@ -8,7 +8,7 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from django.conf import settings
 from myapp.views.gif_creator import GIFAPI
-from myapp.views.lip_sync import LipSyncAPI
+from myapp.views.lip_sync import LipSyncAPI, LipSyncAPI2
 
 # simple jwt setup
 from rest_framework_simplejwt import views as jwt_views
@@ -59,7 +59,7 @@ urlpatterns = [
 
     path('my-gif-maker/', GIFAPI.as_view(), name='gif_creator'),
     path('my-force-aligner/', LipSyncAPI.as_view(), name='gif_creator'),
-
+    path('aligner/', LipSyncAPI2.as_view(), name='creator'),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

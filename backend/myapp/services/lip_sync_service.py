@@ -27,7 +27,9 @@ class LipSyncService:
         }
 
         response = requests.post('http://host.docker.internal:8003/transcriptions', params=params, files=files)
-        
+
+
+        print('fsaddfsasa',response.json())
         alignment.transcription_json = response.json()
         alignment.save()
 
@@ -64,3 +66,4 @@ class LipSyncService:
 
         alignment.video_file = f"transcriptions/transcription_{alignment.id}/t_final.webm"
         alignment.save()
+        return f"./media/transcriptions/transcription_{alignment.id}/t_final.webm"

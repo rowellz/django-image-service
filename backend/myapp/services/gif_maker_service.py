@@ -18,7 +18,7 @@ class AugmentImageService:
 
         file_split = os.path.splitext(img_path)
         gif_path = f"{file_split[0]}.gif"
-        imageio.mimwrite(gif_path, image_list, format='.gif', fps=fps)
+        imageio.mimwrite(gif_path, image_list, format='.gif', fps=fps, loop=0)
 
         return gif_path
 

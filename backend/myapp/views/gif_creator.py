@@ -31,8 +31,8 @@ class GIFAPI(APIView):
         min = request.data.get("min", 10)
         max = request.data.get("max", 30)
         fps = request.data.get("fps", 24)
-        print("view", min, max)
-        gif_path = service.create_gif(img_path=path, min=min, max=max, fps=fps)
+        print("view", min, max, fps)
+        gif_path = service.create_gif(img_path=path, min=int(min), max=int(max), fps=int(fps))
         p1.gif = gif_path.replace("./media/", "")
         p1.save()
 
