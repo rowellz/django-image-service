@@ -147,9 +147,12 @@ CORS_ALLOW_CREDENTIALS = True
 
 CSRF_COOKIE_NAME = "csrftoken"
 
-CORS_ALLOW_HEADERS = default_headers + (
-    'Access-Control-Allow-Origin',
-)
+CORS_ALLOW_HEADERS = [
+    "Content-Disposition",
+]
+CORS_EXPOSE_HEADERS = [
+    "Content-Disposition",
+]
 CORS_ORIGIN_WHITELIST = os.environ.get(
     'CORS_ORIGIN_WHITELIST', default="http://localhost:8000").split(' ')
 

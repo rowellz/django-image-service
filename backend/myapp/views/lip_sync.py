@@ -1,4 +1,5 @@
 import base64
+import mimetypes
 import tempfile
 from rest_framework.views import APIView
 from rest_framework import generics
@@ -43,8 +44,11 @@ class LipSyncAPI(APIView):
         print("fsafsda", auto_text)
         lip_sync = service.sync_audio_and_text(align, auto_text)
         video_path = service.create_lazykh_folder(align)
-        
-        return FileResponse(open(video_path, 'rb'),)
+        file = FileResponse(open(video_path, 'rb'), filename=f"{align.name}.webm",)
+        return file
+        # response = HttpResponse({open(video_path, 'rb')}, content_type=mimetypes.guess_type(video_path)[0],)
+        # response['Content-Disposition'] = f'attachment; filename="f"{align.name}.webm""'
+        # return response
         # return HttpResponse(lip_sync, 200)
 
 

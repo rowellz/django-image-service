@@ -30,7 +30,25 @@ class LipSyncService:
 
 
         print('fsaddfsasa',response.json())
+        # Specify the directory path
+        directory_path = "./transcriptions2/"
+
+        # Get a list of all subdirectories in the specified directory
+        subdirectories = [d for d in os.listdir(directory_path) if os.path.isdir(os.path.join(directory_path, d))]
+
+        # Sort the subdirectories by their creation time (newest first)
+        subdirectories.sort(key=lambda x: os.path.getctime(os.path.join(directory_path, x)), reverse=True)
+
+        # Check if there are any subdirectories
+        if subdirectories:
+            # The first item in the sorted list will be the newest subdirectory
+            newest_subdirectory = subdirectories[0]
+            print("Newest subdirectory:", newest_subdirectory)
+        else:
+            print("No subdirectories found in the specified directory.")
+
         alignment.transcription_json = response.json()
+        alignment.name = newest_subdirectory
         alignment.save()
 
         return json.dumps(response.json())

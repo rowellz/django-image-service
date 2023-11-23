@@ -8,6 +8,7 @@
   let loading = false;
   let uploadProgress = 0;
   let imageDistortionMinMax = [10,40];
+  let matchedFilename = "";
   let fps = [24];
   
   const handleFileChange = (event: any) => {
@@ -18,6 +19,7 @@
   };
   
   const handleSubmit = async (event: any) => {
+    gif = null;
     if (!file) {
       return;
     }
@@ -39,6 +41,13 @@
       }
       });
       gif = response.data;
+      const contentDisposition = response.headers['content-disposition'];
+      const filenameMatch = contentDisposition && contentDisposition.match(/filename="(.+)"/);
+      const filename = filenameMatch && filenameMatch[1];
+      const matchResult = filename?.match(/(.+)\.webm/);
+      matchedFilename = matchResult ? matchResult[1] : '';
+      console.log(matchedFilename);
+      console.log(response, response.config, response.data.filename);
     } catch (error) {
       console.error(error);
     }
@@ -138,12 +147,11 @@
       {/if}
     </form>
       {#if gif}
-        <div id="gif-div">
-          <img id="gif" src={URL.createObjectURL(gif)} alt="GIF" />
-        </div>
         <video width= "320" height="240" controls>
           <source src={URL.createObjectURL(gif)} type="video/webm">
             </video>
+
+          	<iframe title="blah" src={"http://localhost:8003/transcriptions//" + matchedFilename}></iframe>
       {/if}
   </div>
   
